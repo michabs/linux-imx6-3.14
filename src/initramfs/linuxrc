@@ -1,0 +1,51 @@
+#!/bin/ash
+
+# Mount the proc fs
+bin/mount -t proc none /proc
+
+#Defaults
+myeth="eth0"
+
+# Parse kernel command line parameters
+for x in `/bin/cat /proc/cmdline`; do
+    v=${x#*=}
+    case "${x}" in
+        root=*)
+            myroot=${v}
+        ;;
+        ip=*)
+            myipaddr=${v}
+        ;;
+        nfsroot=*)
+            mynfsroot=${v}
+        ;;
+    esac
+done
+
+#bin/echo "myroot=$myroot myipaddr=$myipaddr mynfsroot=$mynfsroot"
+
+#bin/echo "Installing network drivers..."
+
+# We assume the driver is statically compiled, if not, it needs to be placed on
+# the lib/modules/linux-2.6.x folder and loaded here.
+# bin/insmod mynetworkdriver.ko
+
+#bin/echo "Mounting root filesystem ${myroot}"
+
+bin/mkdir /new_root
+
+if [ ${myroot} = "/dev/nfs" ]
+then
+  myip=`expr "$myipaddr" : '\([0-9]*\.[0-9]*\.[0-9]*\.[0-9]*\)'`
+#  bin/echo "with root ${mynfsroot} and ip ${myip}"
+  bin/ifconfig ${myeth} ${myip}
+  bin/mount -t nfs -o nolock,intr,timeo=14,rsize=8192,wsize=8192,ro ${mynfsroot} /new_root
+else
+ bin/mount -t ext3 ${myroot} /new_root
+fi
+
+cd  new_root
+umount /proc
+
+exec /bin/chroot . /sbin/init /dev/console 2>&1
+

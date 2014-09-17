@@ -1,0 +1,17 @@
+#############################
+# src/initramfs/chippc_config
+#############################
+
+dir /dev 755 0 0
+nod /dev/console 644 0 0 c 5 1
+nod /dev/loop0 644 0 0 b 7 0
+dir /bin 755 1000 1000
+slink /bin/sh busybox 777 0 0
+file /bin/busybox ../rootfs/bin/busybox 755 0 0
+#file /linuxrc src/initramfs/linuxrc 600 1000 1000
+#slink /init /linuxrc 777 1000 1000
+file /init ./src/initramfs/linuxrc 777 0 0
+dir /proc 755 0 0
+dir /sys 755 0 0
+dir /mnt 755 0 0
+
