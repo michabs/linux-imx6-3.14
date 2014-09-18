@@ -1,17 +1,35 @@
 #############################
 # src/initramfs/chippc_config
 #############################
-
-dir /dev 755 0 0
+dir /lib 775 1000 1000
+dir /lib/modules 775 1000 1000
+slink /init linuxrc 777 1000 1000
+dir /etc 775 1000 1000
+file /linuxrc src/initramfs/linuxrc 777 1000 1000
+dir /bin 775 1000 1000
+slink /bin/mount busybox 777 1000 1000
+slink /bin/chroot busybox 777 1000 1000
+slink /bin/expr busybox 777 1000 1000
+file /bin/busybox src/initramfs/busybox 777 1000 1000
+slink /bin/ash busybox 777 1000 1000
+slink /bin/umount busybox 777 1000 1000
+slink /bin/[ busybox 777 1000 1000
+slink /bin/insmod busybox 777 1000 1000
+slink /bin/echo busybox 777 1000 1000
+slink /bin/mkdir busybox 777 1000 1000
+slink /bin/ifconfig busybox 777 1000 1000
+slink /bin/cat busybox 777 1000 1000
+dir /proc 775 1000 1000
+dir /dev 775 1000 1000
 nod /dev/console 644 0 0 c 5 1
 nod /dev/loop0 644 0 0 b 7 0
-dir /bin 755 1000 1000
-slink /bin/sh busybox 777 0 0
-file /bin/busybox ../rootfs/bin/busybox 755 0 0
-#file /linuxrc src/initramfs/linuxrc 600 1000 1000
-#slink /init /linuxrc 777 1000 1000
-file /init ./src/initramfs/linuxrc 777 0 0
-dir /proc 755 0 0
-dir /sys 755 0 0
-dir /mnt 755 0 0
-
+slink /dev/fd /proc/self/fd 777 1000 1000
+slink /dev/vcs vcs0 777 1000 1000
+dir /dev/pts 775 1000 1000
+slink /dev/MAKEDEV ../sbin/MAKEDEV 777 1000 1000
+slink /dev/ram ram1 777 1000 1000
+slink /dev/stdout fd/1 777 1000 1000
+slink /dev/vcsa vcsa0 777 1000 1000
+slink /dev/stderr fd/2 777 1000 1000
+slink /dev/core /proc/kcore 777 1000 1000
+slink /dev/stdin fd/0 777 1000 1000

@@ -1,4 +1,5 @@
 #!/bin/ash
+bin/echo "Linuxrc"
 
 # Mount the proc fs
 bin/mount -t proc none /proc
@@ -22,9 +23,9 @@ for x in `/bin/cat /proc/cmdline`; do
     esac
 done
 
-#bin/echo "myroot=$myroot myipaddr=$myipaddr mynfsroot=$mynfsroot"
+bin/echo "myroot=$myroot myipaddr=$myipaddr mynfsroot=$mynfsroot"
 
-#bin/echo "Installing network drivers..."
+bin/echo "Installing network drivers..."
 
 # We assume the driver is statically compiled, if not, it needs to be placed on
 # the lib/modules/linux-2.6.x folder and loaded here.
